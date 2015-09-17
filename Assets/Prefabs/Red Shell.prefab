@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &108398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 438072}
+  - 96: {fileID: 9672648}
+  m_Layer: 11
+  m_Name: trail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &137194
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,7 +26,7 @@ GameObject:
   - 4: {fileID: 477496}
   - 54: {fileID: 5473238}
   - 114: {fileID: 11406090}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Red Shell
   m_TagString: Shell
   m_Icon: {fileID: 0}
@@ -25,7 +41,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 441604}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +58,7 @@ GameObject:
   - 4: {fileID: 405542}
   - 33: {fileID: 3349376}
   - 23: {fileID: 2378398}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: pCube1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +74,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 444352}
   - 65: {fileID: 6583446}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,6 +93,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 441604}
   m_RootOrder: 0
+--- !u!4 &438072
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108398}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 477496}
+  m_RootOrder: 2
 --- !u!4 &441604
 Transform:
   m_ObjectHideFlags: 1
@@ -114,6 +142,7 @@ Transform:
   m_Children:
   - {fileID: 441604}
   - {fileID: 444352}
+  - {fileID: 438072}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!23 &2378398
@@ -174,6 +203,51 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: .200000003, y: .200000003, z: 1.5}
   m_Center: {x: 0, y: 0, z: .25}
+--- !u!96 &9672648
+TrailRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108398}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000e000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_ImportantGI: 0
+  m_AutoUVMaxDistance: .5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Time: .75
+  m_StartWidth: .25
+  m_EndWidth: 0
+  m_Colors:
+    m_Color[0]:
+      serializedVersion: 2
+      rgba: 2269460153
+    m_Color[1]:
+      serializedVersion: 2
+      rgba: 1782920889
+    m_Color[2]:
+      serializedVersion: 2
+      rgba: 977614521
+    m_Color[3]:
+      serializedVersion: 2
+      rgba: 172308153
+    m_Color[4]:
+      serializedVersion: 2
+      rgba: 4535993
+  m_MinVertexDistance: .100000001
+  m_Autodestruct: 1
 --- !u!114 &11406090
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -186,6 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rbody: {fileID: 5473238}
+  trail: {fileID: 9672648}
   team: 1
   velocity: 50
   damage: 1
@@ -199,6 +274,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: team
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

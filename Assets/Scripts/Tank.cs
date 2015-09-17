@@ -9,6 +9,7 @@ public class Tank : Body {
 	public GameObject tankGunEnd;
 	public GameObject tankShellPrefab;
 	public Rigidbody rbody;
+	public ParticleSystem cannonParticles;
 
 	[Header("Settings")]
 	public float rotationSpeed;
@@ -16,7 +17,7 @@ public class Tank : Body {
 	public float reverseSpeed;
 	public float turretSpeed;
 	public float turretAngleOffset;
-	
+
 	#region GetTurretRotation
 	/// <summary>
 	/// Get the rotation of the turret with the <c>turretAngleOffset</c> in mind.
@@ -31,15 +32,19 @@ public class Tank : Body {
 
 	#region MoveTurretTowards
 	public void RotateTurretTowards(float angle) {
-		Vector3 euler = tankTurret.transform.eulerAngles;
-		euler.y = Mathf.MoveTowardsAngle (euler.y, angle + turretAngleOffset, turretSpeed * Time.deltaTime);
-		tankTurret.transform.eulerAngles = euler;
+		Vector3 euler = tankTurret.transform.localEulerAngles;
+		euler.y = Mathf.MoveTowardsAngle (euler.y, angle - rbody.rotation.eulerAngles.y, turretSpeed * Time.deltaTime);
+		tankTurret.transform.localEulerAngles = euler;
+
+		//tankTurret.transform.rotation = Quaternion.Slerp (tankTurret.transform.rotation, angle, turretSpeed * Time.deltaTime);
 	}
 
 	public void RotateTurretTowards(Vector3 target) {
 		// Calculate angle towards target
 		Vector3 delta = target - transform.position;
-		RotateTurretTowards (Mathf.Atan2(delta.x,delta.z) * Mathf.Rad2Deg);
+
+		//RotateTurretTowards (Mathf.Atan2(delta.x,delta.z) * Mathf.Rad2Deg);
+		RotateTurretTowards (Quaternion.LookRotation (delta, tankBase.transform.up).eulerAngles.y);
 	}
 
 	public void RotateTurretTowards(Transform target) {
@@ -72,7 +77,13 @@ public class Tank : Body {
 	#region RotateBodyTowards
 	public void RotateBodyTowards(float angle) {
 		Vector3 euler = rbody.rotation.eulerAngles;
-		euler.y = Mathf.MoveTowardsAngle (euler.y, angle, rotationSpeed * Time.deltaTime);
+		euler.y = Mathf.MoveTowardsAngle (euler.y, angle, rotationSpeed * Time.fixedDeltaTime);
+
+		//Vector3 euler = Vector3.zero;
+		//euler.y = Mathf.MoveTowardsAngle (euler.y, angle - rbody.rotation.eulerAngles.y, rotationSpeed * Time.fixedDeltaTime);
+
+		//rbody.angularVelocity = euler;
+		//rbody.AddRelativeTorque (euler * rotationSpeed);
 		rbody.MoveRotation (Quaternion.Euler (euler));
 	}
 
@@ -103,6 +114,8 @@ public class Tank : Body {
 	#region MoveBody
 	public void MoveBody(float amount) {
 		float speed = (amount > 0 ? movementSpeed : reverseSpeed) * Mathf.Clamp (amount, -1f, 1f);
+		//rbody.velocity = transform.forward * speed * Time.fixedDeltaTime;
+		//rbody.AddForce (transform.forward * speed * Time.deltaTime);
 		rbody.MovePosition (rbody.position + transform.forward * speed * Time.deltaTime);
 	}
 	#endregion

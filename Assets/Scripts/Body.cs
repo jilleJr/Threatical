@@ -20,6 +20,13 @@ public class Body : MonoBehaviour {
 			_dead = value; }
 	}
 
+	#if UNITY_EDITOR
+	void OnValidate() {
+		maxHealth = Mathf.Max (0, maxHealth);
+		health = Mathf.Clamp (health, 0, maxHealth);
+	}
+	#endif
+
 	public virtual void Die() {
 		Destroy (gameObject);
 	}

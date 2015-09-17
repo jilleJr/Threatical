@@ -98,7 +98,7 @@ GameObject:
   - 64: {fileID: 153902074}
   - 23: {fileID: 153902073}
   - 33: {fileID: 153902072}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Quad
   m_TagString: Terrain
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ Transform:
   m_GameObject: {fileID: 153902071}
   m_LocalRotation: {x: .707106829, y: -7.4505806e-09, z: 7.4505806e-09, w: .707106709}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 300, y: 200, z: 200}
+  m_LocalScale: {x: 300, y: 600, z: 200}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -175,7 +175,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &235107149
 Camera:
   m_ObjectHideFlags: 0
@@ -204,6 +204,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -220,7 +221,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!1 &664482681
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,6 +351,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -366,7 +368,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!114 &891937170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,6 +468,10 @@ Prefab:
     - target: {fileID: 439308, guid: 30c320ede85757148b6ba3b6771f2635, type: 2}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 181322, guid: 30c320ede85757148b6ba3b6771f2635, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30c320ede85757148b6ba3b6771f2635, type: 2}

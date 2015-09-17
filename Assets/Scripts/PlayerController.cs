@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour {
 		tank.MoveBody (vertical);
 		
 		// Rotate. If moving backwards the rotation is inverted
-		tank.RotateBody (vertical>0 ? horizontal : -horizontal);
+		tank.RotateBody (Input.GetAxisRaw("Vertical")>=0 ? horizontal : -horizontal);
 	}
 
 	void UpdateTurret(RaycastHit hit) {

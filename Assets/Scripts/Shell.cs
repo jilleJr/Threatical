@@ -5,6 +5,7 @@ public class Shell : MonoBehaviour {
 
 	[Header("Objects")]
 	public Rigidbody rbody;
+	public TrailRenderer trail;
 
 	[Header("Settings")]
 	public Team team;
@@ -36,6 +37,9 @@ public class Shell : MonoBehaviour {
 
 	void Die() {
 		Destroy (gameObject);
+
+		if (trail != null)
+			trail.transform.parent = null;
 	}
 
 	public static void FireShell(GameObject prefab, Vector3 position, Quaternion rotation) {
@@ -49,6 +53,8 @@ public class Shell : MonoBehaviour {
 
 	public static void FireShell(Tank tank) {
 		FireShell (tank.tankShellPrefab, tank.tankGunEnd.transform.position, tank.GetTurretRotation());
+		if (tank.cannonParticles != null)
+			tank.cannonParticles.Play ();
 	}
 
 }
