@@ -23,13 +23,26 @@ public class Shell : MonoBehaviour {
 		// Get the gameobject of the collider. If it has a rigidbody get the gameobject of that one instead
 		GameObject main = other.attachedRigidbody != null ? other.attachedRigidbody.gameObject : other.gameObject;
 
-		if (main.tag == "Terrain") {
-			dead = true;
-		} else if (main.tag == "Tank") {
-			Tank tank = main.GetComponent<Tank>();
+		CollisionHandler(main);
+	}
 
-			if (tank.team != team) {
-				tank.Damage(damage);
+	void OnCollisionEnter(Collision collision) {
+		// Get the gameobject of the collider. If it has a rigidbody get the gameobject of that one instead
+		GameObject main = collision.rigidbody != null ?  collision.rigidbody.gameObject : collision.gameObject;
+
+		CollisionHandler(main);
+	}
+
+	void CollisionHandler(GameObject obj) {
+		if (obj.tag == "Terrain") {
+			// Collision with ground/terrain/landscape
+			dead = true;
+		} else {
+			var body = obj.GetComponent<Body>();
+
+			if (body != null && body.team != team) {
+				// Collision with enemy "body"
+				body.Damage(damage);
 				dead = true;
 			}
 		}

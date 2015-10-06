@@ -2,7 +2,7 @@
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
-[Bb]uild/
+**/[Ll]ightmaps*
 
 # Self made
 [Bb]ackups/
@@ -17,9 +17,7 @@
 /*.userprefs
 /*.pidb
 /*.booproj
-
-#Unity3D Generated File On Crash Reports
-sysinfo.txt
+/.vs
 
 # =========================
 # Operating System Files
@@ -43,13 +41,6 @@ Icon
 .Spotlight-V100
 .Trashes
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
 # Windows
 # =========================
 
@@ -69,5 +60,3 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
-# Windows shortcuts
-*.lnk

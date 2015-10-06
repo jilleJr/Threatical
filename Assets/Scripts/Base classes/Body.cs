@@ -12,6 +12,7 @@ public class Body : MonoBehaviour {
 	public int health = 1;
 	public int maxHealth = 1;
 	public Team team;
+	public BoxCollider mainCollider;
 
 	private bool _dead;
 	public bool dead {
@@ -22,8 +23,8 @@ public class Body : MonoBehaviour {
 
 	#if UNITY_EDITOR
 	void OnValidate() {
-		maxHealth = Mathf.Max (0, maxHealth);
-		health = Mathf.Clamp (health, 0, maxHealth);
+		health = Mathf.Clamp(health, 0, maxHealth);
+		maxHealth = Mathf.Max(maxHealth, 0);
 	}
 	#endif
 
@@ -45,5 +46,12 @@ public class Body : MonoBehaviour {
 
 	public virtual void Heal(int amount) {
 		HealthChange (amount);
+	}
+
+	public static float GetDistance(Body A, Body B) {
+		Vector3 ACenter = A.transform.position + A.mainCollider.center;
+		Vector3 BCenter = B.transform.position + B.mainCollider.center;
+
+		return Vector3.Distance(ACenter, BCenter);
 	}
 }
