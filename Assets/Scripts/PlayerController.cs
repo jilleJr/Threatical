@@ -5,9 +5,18 @@ public class PlayerController : MonoBehaviour {
 
 	[Header("Objects")]
 	public Tank tank;
+	public Follow cameraFollow;
+	public Animator reloadAnim;
 
 	[Header("Settings")]
 	public LayerMask raycastLayer;
+
+	private const float shootCooldown = 3.9f;
+	private bool canShoot;
+
+	private void Start() {
+		StartCoroutine(WaitForReload());
+	}
 
 	void Update() {
 		Movement ();
@@ -27,18 +36,23 @@ public class PlayerController : MonoBehaviour {
 		tank.RotateBody (Input.GetAxisRaw("Vertical")>=0 ? horizontal : -horizontal);
 	}
 
-	void UpdateTurret(RaycastHit hit) {
-		tank.RotateTurretTowards(hit.point);
-	}
-
 	void Shoot() {
 		// Read input
 		bool fire = Input.GetButtonDown ("Fire");
 
-		if (fire) {
+		if (fire && canShoot) {
 			// Fire shell from this tank
 			Shell.FireShell(tank);
+			StartCoroutine(WaitForReload());
 		}
+	}
+
+	IEnumerator WaitForReload() {
+		canShoot = false;
+		reloadAnim.SetTrigger("Reload");
+		EffectsController.AudioTankReload(transform);
+		yield return new WaitForSeconds(shootCooldown);
+		canShoot = true;
 	}
 
 	void Raycast() {
@@ -47,7 +61,11 @@ public class PlayerController : MonoBehaviour {
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity, raycastLayer)) {
 			// Call raycast hit handlers
-			UpdateTurret (hit);
+			tank.RotateTurretTowards(hit.point);
+			if (cameraFollow)
+				cameraFollow.lookAt = hit.point;
+		} else if (cameraFollow) {
+			cameraFollow.lookAt = transform.position;
 		}
 	}
 }

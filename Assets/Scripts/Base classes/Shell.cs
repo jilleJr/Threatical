@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class Shell : MonoBehaviour {
 
@@ -28,15 +29,20 @@ public class Shell : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision) {
 		// Get the gameobject of the collider. If it has a rigidbody get the gameobject of that one instead
-		GameObject main = collision.rigidbody != null ?  collision.rigidbody.gameObject : collision.gameObject;
+		GameObject main = collision.rigidbody != null ? collision.rigidbody.gameObject : collision.gameObject;
 
 		CollisionHandler(main);
+	}
+
+	private void Start() {
+		Invoke("Die", 5);
 	}
 
 	void CollisionHandler(GameObject obj) {
 		if (obj.tag == "Terrain") {
 			// Collision with ground/terrain/landscape
 			dead = true;
+			EffectsController.VisualCrater(transform.position, Vector3.up);
 		} else {
 			var body = obj.GetComponent<Body>();
 
@@ -44,6 +50,9 @@ public class Shell : MonoBehaviour {
 				// Collision with enemy "body"
 				body.Damage(damage);
 				dead = true;
+
+				if (body is Building)
+					EffectsController.VisualCrater(transform.position, -transform.forward, LayerMask.GetMask("Ground", "Unit", "Default"));
 			}
 		}
 	}
@@ -53,6 +62,9 @@ public class Shell : MonoBehaviour {
 
 		if (trail != null)
 			trail.transform.parent = null;
+
+		EffectsController.AudioGunShot(transform.position);
+		EffectsController.VisualFirework(transform.position);
 	}
 
 	public static void FireShell(GameObject prefab, Vector3 position, Quaternion rotation) {
@@ -66,8 +78,8 @@ public class Shell : MonoBehaviour {
 
 	public static void FireShell(Tank tank) {
 		FireShell (tank.tankShellPrefab, tank.tankGunEnd.transform.position, tank.GetTurretRotation());
-		if (tank.cannonParticles != null)
-			tank.cannonParticles.Play ();
+		EffectsController.VisualToonExplosion(tank.tankGunEnd.transform.position, 3, 5);
+		EffectsController.AudioTankFiring(tank.tankGunEnd.transform.position);
 	}
 
 }

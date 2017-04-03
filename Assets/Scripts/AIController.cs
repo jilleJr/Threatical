@@ -34,10 +34,20 @@ public class AIController : MonoBehaviour {
 	}
 #endif
 
+	private void Start() {
+		// Start off un-reloaded
+		reloaded = reloadDelay;
+	}
+
 	void Update() {
 		// No target or if its out of range, then find a new target
-		if (target == null || InFiringRange(target))
+		if (target == null || !InFiringRange(target))
 			target = GetNearestBody ();
+		else if (!(target is Tank)) {
+			var doubleCheck = GetNearestBody();
+			if (doubleCheck is Tank)
+				target = doubleCheck;
+		}
 
 		Reload ();
 
@@ -69,11 +79,14 @@ public class AIController : MonoBehaviour {
 
 				float distance = Body.GetDistance(tank, body);
 
-				if (nearestBody == null) {
-					// Set the first one as nearest for others to have something to compare to
-					nearestBody = body;
-					nearestDist = distance;
-				} else if (distance < nearestDist) {
+				bool yesAnyway = 
+					// No nearest to begin with
+					nearestBody == null
+					// Nearest isn't a tank, but this one is :o
+				||	(body is Tank && !(nearestBody is Tank))
+				;
+
+				if (yesAnyway || distance < nearestDist) {
 					// Found a body thats even closer...
 					nearestBody = body;
 					nearestDist = distance;

@@ -9,7 +9,6 @@ public class Tank : Body {
 	public GameObject tankGunEnd;
 	public GameObject tankShellPrefab;
 	public Rigidbody rbody;
-	public ParticleSystem cannonParticles;
 
 	[Header("Settings")]
 	public float rotationSpeed;
@@ -17,6 +16,28 @@ public class Tank : Body {
 	public float reverseSpeed;
 	public float turretSpeed;
 	public float turretAngleOffset;
+
+	public override void Die() {
+		// Move all meshes away
+		foreach (var filter in GetComponentsInChildren<MeshFilter>()) {
+			if (!filter.GetComponent<MeshRenderer>()) continue;
+			filter.transform.SetParent(null, true);
+			filter.gameObject.layer = 1; // TransparentFX
+
+			var col = filter.gameObject.AddComponent<MeshCollider>();
+			col.sharedMesh = filter.sharedMesh;
+			col.convex = true;
+
+			var rb = filter.gameObject.AddComponent<Rigidbody>();
+			rb.AddExplosionForce(5, transform.position, 15);
+
+			Destroy(filter.gameObject, Random.Range(2f, 5f));
+		}
+
+		EffectsController.VisualExplosion(transform.position);
+		EffectsController.AudioMortarRound(transform.position);
+		base.Die();
+	}
 
 	#region GetTurretRotation
 	/// <summary>
@@ -42,6 +63,7 @@ public class Tank : Body {
 	public void RotateTurretTowards(Vector3 target) {
 		// Calculate angle towards target
 		Vector3 delta = target - transform.position;
+		if (Mathf.Approximately(delta.magnitude, 0f)) delta = tankBase.transform.forward;
 
 		//RotateTurretTowards (Mathf.Atan2(delta.x,delta.z) * Mathf.Rad2Deg);
 		RotateTurretTowards (Quaternion.LookRotation (delta, tankBase.transform.up).eulerAngles.y);
@@ -52,7 +74,7 @@ public class Tank : Body {
 	}
 
 	public void RotateTurretTowards(Body target) {
-		RotateTurretTowards (target.transform);
+		RotateTurretTowards (target.transform.TransformPoint(target.mainCollider.center));
 	}
 	#endregion
 
